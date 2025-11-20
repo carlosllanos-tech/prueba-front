@@ -1,0 +1,95 @@
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ isEditMode ? 'Editar Jugador' : 'Nuevo Jugador' }}</h2>
+        <a routerLink="/dashboard/jugadores" class="btn btn-outline-secondary">← Volver</a>
+    </div>
+
+    <div *ngIf="loading && isEditMode" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+    </div>
+
+    <div *ngIf="!loading || !isEditMode" class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="jugadorForm" (ngSubmit)="onSubmit()">
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nombre *</label>
+                                <input type="text" class="form-control" [class.is-invalid]="isFieldInvalid('nombre')"
+                                    formControlName="nombre" placeholder="Juan">
+                                <div class="invalid-feedback" *ngIf="isFieldInvalid('nombre')">
+                                    {{ getErrorMessage('nombre') }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Apellido *</label>
+                                <input type="text" class="form-control" [class.is-invalid]="isFieldInvalid('apellido')"
+                                    formControlName="apellido" placeholder="Pérez">
+                                <div class="invalid-feedback" *ngIf="isFieldInvalid('apellido')">
+                                    {{ getErrorMessage('apellido') }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Fecha de Nacimiento *</label>
+                                <input type="date" class="form-control"
+                                    [class.is-invalid]="isFieldInvalid('fecha_nacimiento')"
+                                    formControlName="fecha_nacimiento">
+                                <div class="invalid-feedback" *ngIf="isFieldInvalid('fecha_nacimiento')">
+                                    {{ getErrorMessage('fecha_nacimiento') }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Número de Camiseta *</label>
+                                <input type="number" class="form-control"
+                                    [class.is-invalid]="isFieldInvalid('nro_camiseta')" formControlName="nro_camiseta"
+                                    placeholder="10" min="1" max="99">
+                                <div class="invalid-feedback" *ngIf="isFieldInvalid('nro_camiseta')">
+                                    {{ getErrorMessage('nro_camiseta') }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Posición *</label>
+                                <input type="text" class="form-control" [class.is-invalid]="isFieldInvalid('posicion')"
+                                    formControlName="posicion" placeholder="Delantero">
+                                <div class="invalid-feedback" *ngIf="isFieldInvalid('posicion')">
+                                    {{ getErrorMessage('posicion') }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Equipo *</label>
+                                <select class="form-select" [class.is-invalid]="isFieldInvalid('equipo_id')"
+                                    formControlName="equipo_id" [disabled]="isEditMode">
+                                    <option [value]="null">Seleccione un equipo</option>
+                                    <option *ngFor="let equipo of equipos" [value]="equipo.id">
+                                        {{ equipo.nombre }} - {{ equipo.torneo_nombre }}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback" *ngIf="isFieldInvalid('equipo_id')">
+                                    {{ getErrorMessage('equipo_id') }}
+                                </div>
+                                <small class="text-muted" *ngIf="isEditMode">
+                                    No se puede cambiar el equipo
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary" [disabled]="loading">
+                                <span class="spinner-border spinner-border-sm me-2" *ngIf="loading"></span>
+                                {{ isEditMode ? 'Actualizar' : 'Crear' }} Jugador
+                            </button>
+                            <a routerLink="/dashboard/jugadores" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

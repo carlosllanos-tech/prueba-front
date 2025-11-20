@@ -11,6 +11,9 @@ import { DetalleTorneoComponent } from './torneos/components/detalle-torneo/deta
 import { ListarEquiposComponent } from './equipos/components/listar-equipos/listar-equipos.component';
 import { FormularioEquipoComponent } from './equipos/components/formulario-equipo/formulario-equipo.component';
 import { DetalleEquipoComponent } from './equipos/components/detalle-equipo/detalle-equipo.component';
+import { ListarJugadoresComponent } from './jugadores/components/listar-jugadores/listar-jugadores.component';
+import { FormularioJugadorComponent } from './jugadores/components/formulario-jugador/formulario-jugador.component';
+import { DetalleJugadorComponent } from './jugadores/components/detalle-jugador/detalle-jugador.component';
 
 const routes: Routes = [
   {
@@ -99,6 +102,35 @@ const routes: Routes = [
             component: DetalleEquipoComponent,
             canActivate: [authGuard],
             title: 'Detalle de Equipo',
+          },
+        ],
+      },
+      {
+        path: 'jugadores',
+        children: [
+          {
+            path: '',
+            component: ListarJugadoresComponent,
+            canActivate: [authGuard],
+            title: 'Gestión de Jugadores',
+          },
+          {
+            path: 'nuevo',
+            component: FormularioJugadorComponent,
+            canActivate: [authGuard],
+            title: 'Nuevo Jugador',
+          },
+          {
+            path: 'editar/:id',
+            component: FormularioJugadorComponent,
+            canActivate: [authGuard],
+            title: 'Editar Jugador',
+          },
+          {
+            path: ':id',
+            component: DetalleJugadorComponent,
+            canActivate: [authGuard],
+            title: 'Detalle del Jugador',
           },
         ],
       },

@@ -1,0 +1,71 @@
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Jugadores</h2>
+        <a routerLink="/dashboard/jugadores/nuevo" class="btn btn-primary" *ngIf="authService.isAuthenticated()">
+            + Nuevo Jugador
+        </a>
+    </div>
+
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+    </div>
+
+    <div *ngIf="!loading">
+        <p class="text-muted mb-3">Total: <strong>{{ total }}</strong></p>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Jugador</th>
+                        <th>Posición</th>
+                        <th>Equipo</th>
+                        <th>Torneo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let jugador of jugadores">
+                        <td>
+                            <span class="badge bg-primary">{{ jugador.nro_camiseta }}</span>
+                        </td>
+                        <td>
+                            <strong>{{ jugador.nombre }} {{ jugador.apellido }}</strong><br>
+                            <small class="text-muted">{{ calcularEdad(jugador.fecha_nacimiento) }} años</small>
+                        </td>
+                        <td>{{ jugador.posicion }}</td>
+                        <td>
+                            {{ jugador.equipo_nombre }}<br>
+                            <span class="badge" [style.background-color]="jugador.equipo_color">
+                                {{ jugador.equipo_color }}
+                            </span>
+                        </td>
+                        <td>
+                            <small>{{ jugador.torneo_nombre }}</small><br>
+                            <small class="text-muted">{{ jugador.torneo_disciplina }}</small>
+                        </td>
+                        <td>
+                            <a [routerLink]="['/dashboard/jugadores', jugador.id]" class="btn btn-sm btn-outline-primary me-1">
+                                Ver
+                            </a>
+                            <ng-container *ngIf="authService.isAuthenticated()">
+                                <a [routerLink]="['/dashboard/jugadores/editar', jugador.id]"
+                                    class="btn btn-sm btn-outline-secondary me-1">
+                                    Editar
+                                </a>
+                                <button (click)="eliminarJugador(jugador)" class="btn btn-sm btn-outline-danger">
+                                    Eliminar
+                                </button>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div *ngIf="jugadores.length === 0" class="text-center py-4">
+                <p class="text-muted">No hay jugadores registrados</p>
+            </div>
+        </div>
+    </div>
+</div>

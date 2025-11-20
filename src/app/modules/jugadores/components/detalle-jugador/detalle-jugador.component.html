@@ -1,0 +1,57 @@
+<div class="container py-4">
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+    </div>
+
+    <div *ngIf="!loading && jugador">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>{{ jugador.nombre }} {{ jugador.apellido }}</h2>
+            <a routerLink="/dashboard/jugadores" class="btn btn-outline-secondary">← Volver</a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted">Número de Camiseta</label>
+                        <p>
+                            <span class="badge bg-primary fs-4">#{{ jugador.nro_camiseta }}</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted">Posición</label>
+                        <p class="fw-bold">{{ jugador.posicion }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted">Nombre Completo</label>
+                        <p class="fw-bold">{{ jugador.nombre }} {{ jugador.apellido }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted">Edad</label>
+                        <p class="fw-bold">{{ jugador.edad }} años</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted">Fecha de Nacimiento</label>
+                        <p>{{ formatearFecha(jugador.fecha_nacimiento) }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted">Equipo</label>
+                        <p class="fw-bold">
+                            {{ jugador.equipo_nombre }}<br>
+                            <span class="badge" [style.background-color]="jugador.equipo_color">
+                                {{ jugador.equipo_color }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="text-muted">Torneo</label>
+                        <p class="fw-bold">
+                            {{ jugador.torneo_nombre }}<br>
+                            <small class="text-muted">{{ jugador.torneo_disciplina }}</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
