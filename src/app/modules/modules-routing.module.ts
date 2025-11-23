@@ -19,6 +19,7 @@ import { FormularioPartidoComponent } from './partidos/components/formulario-par
 import { DetallePartidoComponent } from './partidos/components/detalle-partido/detalle-partido.component';
 import { ListarEventosComponent } from './eventos/components/listar-eventos/listar-eventos.component';
 import { FormularioEventoComponent } from './eventos/components/formulario-evento/formulario-evento.component';
+import { ReportesComponent } from './reportes/components/reportes/reportes.component';
 
 const routes: Routes = [
   {
@@ -189,13 +190,13 @@ const routes: Routes = [
             canActivate: [authGuard],
             title: 'Editar Evento',
           },
-          /* {
-            path: ':id',
-            component: DetallePartidoComponent,
-            canActivate: [authGuard],
-            title: 'Detalle del Partido',
-          }, */
         ],
+      },
+      {
+        path: 'reportes',
+        component: ReportesComponent,
+        canActivate: [authGuard],
+        title: 'Módulo de Reportes',
       },
     ],
   },

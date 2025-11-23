@@ -1,0 +1,240 @@
+
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📊 Módulo de Reportes</h2>
+    </div>
+
+    <!-- Tabs de reportes -->
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <button class="nav-link" [class.active]="tipoReporte === 'equipos'" 
+                    (click)="cambiarTipoReporte('equipos')">
+                👥 Equipos
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" [class.active]="tipoReporte === 'jugadores'" 
+                    (click)="cambiarTipoReporte('jugadores')">
+                ⚽ Jugadores
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" [class.active]="tipoReporte === 'fixture'" 
+                    (click)="cambiarTipoReporte('fixture')">
+                📅 Fixture
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" [class.active]="tipoReporte === 'tabla'" 
+                    (click)="cambiarTipoReporte('tabla')">
+                🏆 Tabla de Posiciones
+            </button>
+        </li>
+    </ul>
+
+    <!-- Equipos por Torneo -->
+    <div *ngIf="tipoReporte === 'equipos'" class="card">
+        <div class="card-header">
+            <h5 class="mb-0">👥 Equipos por Torneo</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Genera un reporte de todos los equipos participantes en un torneo</p>
+            
+            <div class="row align-items-end">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Seleccionar Torneo</label>
+                    <select class="form-select" [(ngModel)]="torneoSeleccionado">
+                        <option [value]="null">-- Seleccione un torneo --</option>
+                        <option *ngFor="let torneo of torneos" [value]="torneo.id">
+                            {{ torneo.nombre }} ({{ torneo.disciplina }})
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-danger btn-format me-2" 
+                            [disabled]="!torneoSeleccionado || descargando"
+                            (click)="descargar('equipos', torneoSeleccionado!, 'pdf')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📄 PDF
+                    </button>
+                    <button class="btn btn-success btn-format" 
+                            [disabled]="!torneoSeleccionado || descargando"
+                            (click)="descargar('equipos', torneoSeleccionado!, 'excel')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📊 Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jugadores por Equipo -->
+    <div *ngIf="tipoReporte === 'jugadores'" class="card">
+        <div class="card-header">
+            <h5 class="mb-0">⚽ Jugadores por Equipo</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Genera un reporte de la nómina completa de jugadores de un equipo</p>
+            
+            <div class="row align-items-end">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Seleccionar Equipo</label>
+                    <select class="form-select" [(ngModel)]="equipoSeleccionado">
+                        <option [value]="null">-- Seleccione un equipo --</option>
+                        <option *ngFor="let equipo of equipos" [value]="equipo.id">
+                            {{ equipo.nombre }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-danger btn-format me-2" 
+                            [disabled]="!equipoSeleccionado || descargando"
+                            (click)="descargar('jugadores', equipoSeleccionado!, 'pdf')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📄 PDF
+                    </button>
+                    <button class="btn btn-success btn-format" 
+                            [disabled]="!equipoSeleccionado || descargando"
+                            (click)="descargar('jugadores', equipoSeleccionado!, 'excel')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📊 Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fixture por Torneo -->
+    <div *ngIf="tipoReporte === 'fixture'" class="card">
+        <div class="card-header">
+            <h5 class="mb-0">📅 Fixture de Torneo</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Genera un reporte del calendario completo de partidos del torneo</p>
+            
+            <div class="row align-items-end">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Seleccionar Torneo</label>
+                    <select class="form-select" [(ngModel)]="torneoSeleccionado">
+                        <option [value]="null">-- Seleccione un torneo --</option>
+                        <option *ngFor="let torneo of torneos" [value]="torneo.id">
+                            {{ torneo.nombre }} ({{ torneo.disciplina }})
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-danger btn-format me-2" 
+                            [disabled]="!torneoSeleccionado || descargando"
+                            (click)="descargar('fixture', torneoSeleccionado!, 'pdf')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📄 PDF
+                    </button>
+                    <button class="btn btn-success btn-format" 
+                            [disabled]="!torneoSeleccionado || descargando"
+                            (click)="descargar('fixture', torneoSeleccionado!, 'excel')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📊 Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Posiciones -->
+    <div *ngIf="tipoReporte === 'tabla'" class="card">
+        <div class="card-header">
+            <h5 class="mb-0">🏆 Tabla de Posiciones</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Genera un reporte de la tabla de posiciones actual del torneo</p>
+            
+            <div class="row align-items-end mb-3">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Seleccionar Torneo</label>
+                    <select class="form-select" [(ngModel)]="torneoSeleccionado" 
+                            (change)="cargarTablaPosiciones()">
+                        <option [value]="null">-- Seleccione un torneo --</option>
+                        <option *ngFor="let torneo of torneos" [value]="torneo.id">
+                            {{ torneo.nombre }} ({{ torneo.disciplina }})
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-danger btn-format me-2" 
+                            [disabled]="!torneoSeleccionado || descargando"
+                            (click)="descargar('tabla', torneoSeleccionado!, 'pdf')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📄 PDF
+                    </button>
+                    <button class="btn btn-success btn-format" 
+                            [disabled]="!torneoSeleccionado || descargando"
+                            (click)="descargar('tabla', torneoSeleccionado!, 'excel')">
+                        <span class="spinner-border spinner-border-sm me-1" *ngIf="descargando"></span>
+                        📊 Excel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vista previa de tabla -->
+            <div *ngIf="tablaPosiciones" class="mt-4">
+                <h6>Vista Previa - {{ tablaPosiciones.torneo.nombre }}</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pos</th>
+                                <th>Equipo</th>
+                                <th>PJ</th>
+                                <th>PG</th>
+                                <th>PE</th>
+                                <th>PP</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th class="fw-bold">PTS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let equipo of tablaPosiciones.data; let i = index">
+                                <td class="fw-bold">{{ i + 1 }}</td>
+                                <td>{{ equipo.equipo_nombre }}</td>
+                                <td>{{ equipo.partidos_jugados }}</td>
+                                <td class="text-success">{{ equipo.partidos_ganados }}</td>
+                                <td class="text-warning">{{ equipo.partidos_empatados }}</td>
+                                <td class="text-danger">{{ equipo.partidos_perdidos }}</td>
+                                <td>{{ equipo.goles_favor }}</td>
+                                <td>{{ equipo.goles_contra }}</td>
+                                <td [class.text-success]="equipo.diferencia_goles > '0'" 
+                                    [class.text-danger]="equipo.diferencia_goles < '0'">
+                                    {{ equipo.diferencia_goles }}
+                                </td>
+                                <td class="fw-bold">{{ equipo.puntos }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <small class="text-muted">
+                    PJ: Partidos Jugados | PG: Ganados | PE: Empatados | PP: Perdidos | 
+                    GF: Goles a Favor | GC: Goles en Contra | DG: Diferencia de Goles | PTS: Puntos
+                </small>
+            </div>
+
+            <!-- Loading tabla -->
+            <div *ngIf="loadingTabla" class="text-center py-4">
+                <div class="spinner-border text-primary"></div>
+                <p class="text-muted mt-2">Cargando tabla de posiciones...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info adicional -->
+    <div class="alert alert-info mt-4">
+        <h6>ℹ️ Información sobre reportes</h6>
+        <ul class="mb-0">
+            <li><strong>PDF:</strong> Ideal para impresión y visualización profesional</li>
+            <li><strong>Excel:</strong> Permite análisis y manipulación de datos</li>
+            <li>Todos los reportes requieren autenticación</li>
+        </ul>
+    </div>
+</div>
